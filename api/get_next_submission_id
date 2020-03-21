@@ -1,0 +1,14 @@
+#!/bin/bash
+cd `dirname $0`
+
+LOCK="./get_next_submission_id.lock"
+
+lockfile $LOCKFILE
+trap "rm -f $LOCKFILE" EXIT
+
+path="$(data_path)/last_id.txt"
+
+ID=$(cat $path)
+ID=$(expr $ID + 1)
+echo $ID > $path
+echo $ID

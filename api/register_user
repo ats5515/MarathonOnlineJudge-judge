@@ -1,0 +1,15 @@
+#!/bin/bash
+cd `dirname $0`
+set -x
+USER=$1
+PASS=$2
+
+USERPATH=s3://$(get_bucket_name)/user/$USER
+status="0"
+aws s3 ls ${USERPATH} && status="1"
+if [ $status = "1" ]; then
+  echo 'user already registered'
+  exit 1
+fi
+
+echo -n "$PASS" | aws s3 cp - ${USERPATH}/password

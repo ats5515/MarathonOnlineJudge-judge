@@ -1,0 +1,2 @@
+#!/bin/bash
+$(judge_path)/lang/$1/get_extension.sh

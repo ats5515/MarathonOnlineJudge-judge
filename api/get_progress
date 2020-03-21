@@ -1,0 +1,20 @@
+#!/bin/bash
+
+SUB_PATH=$(submissions_path)/$1
+
+status="0"
+aws s3 ls s3://$(get_bucket_name)/submissions/$1/result.json >/dev/null 2>&1 && status="1"
+
+if [ $status = "1" ]; then
+    echo -n "done"
+else
+  if [ -e ${SUB_PATH}/results ]; then
+    ls -l ${SUB_PATH}/results/ | grep ^d | wc -l
+  else
+    if [ -e ${SUB_PATH}/progress.txt ]; then
+      cat ${SUB_PATH}/progress.txt
+    else
+      echo -n "WJ"
+    fi
+  fi
+fi

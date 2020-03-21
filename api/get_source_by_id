@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#sub_id -> submission(txt)
+
+submission_path="$(submissions_path)/$1/main.*"
+bucket=$(get_bucket_name)
+
+SOURSE=$(cat $submission_path)
+
+if [ -z "$SOURSE" ]; then
+  FILENAME=$(aws s3 ls s3://${bucket}/submissions/$1/ | grep "main*" | awk '{print $4}')
+  SOURSE=$(aws s3 cp s3://${bucket}/submissions/$1/$FILENAME -)
+fi
+
+if [ -z "$SOURSE" ]; then
+  exit 1
+fi
+
+echo -n "$SOURSE"

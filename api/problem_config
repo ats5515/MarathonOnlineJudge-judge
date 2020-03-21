@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cat $(problems_path)/$1/config.json || exit 1

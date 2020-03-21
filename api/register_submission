@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -x
+cd `dirname $0`
+LOCKFILE="./register_submission.lock"
+
+SUB_PATH="$(submissions_path)/$1/"
+S3_PATH="s3://$(get_bucket_name)/submissions/$1/"
+
+
+aws s3 ls $S3_PATH >/dev/null 2>&1 || if [ -e $SUB_PATH ]; then :; else exit 1; fi
+
+lockfile $LOCKFILE
+trap "rm -f $LOCKFILE" EXIT
+
+aws s3 mv --recursive $S3_PATH $SUB_PATH
+
+python3 register_submission.py $1
+
+aws s3 mv --recursive $SUB_PATH $S3_PATH && rm -r $SUB_PATH
+

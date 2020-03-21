@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cat $(submissions_path)/$1/info.json || exit 1

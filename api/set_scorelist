@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#get_scorelist @problemid -> json
+
+set -x
+
+bucket=$(get_bucket_name)
+
+echo -n "$2" | aws s3 cp - s3://${bucket}/cache/$1/scorelist.json

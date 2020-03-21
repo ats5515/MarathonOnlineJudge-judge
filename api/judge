@@ -1,0 +1,15 @@
+#!/bin/bash
+cd `dirname $0`
+
+set -x
+
+SUB_PATH=$(submissions_path)/$1
+LOCKFILE="$(submissions_path)/LOCK_JUDGE_$1"
+
+lockfile $LOCKFILE
+trap "rm -f $LOCKFILE" EXIT
+
+echo -n "WJ" > ${SUB_PATH}/progress.txt
+timeout 3600 python3 $(basedir)/judge/judge.py $SUB_PATH
+timeout 3600 python3 $(basedir)/judge/result.py $SUB_PATH
+register_submission $1

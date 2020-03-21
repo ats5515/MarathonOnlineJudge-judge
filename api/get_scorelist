@@ -1,0 +1,11 @@
+#!/bin/bash
+
+#get_scorelist @problemid -> json
+
+set -x
+
+bucket=$(get_bucket_name)
+
+res=$(aws s3 cp s3://${bucket}/cache/$1/scorelist.json -) || res="[]"
+
+echo -n "${res}"

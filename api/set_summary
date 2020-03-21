@@ -1,0 +1,6 @@
+#!/bin/bash
+cd `dirname $0`
+
+bucket=$(get_bucket_name)
+
+echo -n "$3" | aws s3 cp - s3://${bucket}/cache/$1/$2/summary.json

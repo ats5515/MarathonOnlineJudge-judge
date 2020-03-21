@@ -1,0 +1,103 @@
+body{
+    background-color: #fafafa;
+    color: #555;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 1.6em;
+    margin: 0px;
+    min-height: 100vh;
+}
+
+h1,h2,h3,h4{
+    border-bottom: 1px solid #006e54;
+    border-left: 10px solid #006e54;
+    padding: 7px;
+}
+
+.ats-container{
+    width: 80%;
+    margin: 20px auto;
+    overflow: hidden;
+}
+
+.ats-header{
+    background-color: #006666;
+    color:#fff;
+    padding: 20px 40px 0 40px;
+    margin: 0;
+    margin-bottom: 20px;
+}
+
+.ats-navbar{
+}
+
+.ats-navbar ul{
+    padding:0;
+    list-style: none;
+}
+
+.ats-navbar li{
+    display: inline;
+}
+
+.ats-navbar a{
+    color: #fff;
+    text-decoration: none;
+    padding-left: 7px;
+    padding-right: 7px;
+    display: inline;
+    font-size: 18px;
+}
+.ats-navbar-right{
+    float: right;
+}
+
+.ats-navbar-left{
+    float: left;
+}
+
+.ats-logo{
+    font-size: 22px !important;
+}
+
+.ats-table{
+    width: 100%;
+    margin:  0 auto; 
+    border-collapse: collapse;
+}
+.ats-table th{
+    padding: 10px;
+    border-top: 1px solid;
+    border-bottom: 2px solid;
+    background-color: #cccccc;
+    text-align: left;
+}
+
+.ats-table td{
+    padding: 10px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #999;
+}
+
+.prettyprint ol.linenums > li {
+	list-style-type: decimal; 
+}
+.prettyprint {
+    background: #fff;
+    font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace;
+    border: 0 !important;
+}
+li.L0,
+li.L1,
+li.L2,
+li.L3,
+li.L4,
+li.L5,
+li.L6,
+li.L7,
+li.L8,
+li.L9 {
+  padding-left: 1em;
+  background-color: #fff;
+  list-style-type: decimal;
+}
