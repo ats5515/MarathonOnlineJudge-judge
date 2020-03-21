@@ -1,0 +1,13 @@
+/*.pem
+/*.ppk
+/*.txt
+/permission.sh
+/local
+/problems
+/submissions
+/data
+/test
+/www
+/.*
+
+!.gitignore
