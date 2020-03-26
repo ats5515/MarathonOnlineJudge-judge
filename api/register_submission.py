@@ -9,25 +9,30 @@ import json
 
 args = sys.argv
 
-judge_path = os.path.dirname(os.path.abspath(__file__))
-
 submission_id = args[1]
+
+base_dir = subprocess.run(
+    'basedir', shell=True, stdout=subprocess.PIPE).stdout.decode("utf8").rstrip('\n')
 submissions_path = subprocess.run(
     'submissions_path', shell=True, stdout=subprocess.PIPE).stdout.decode("utf8").rstrip('\n')
 submission_path = submissions_path + '/' + submission_id
 
 submission_info = json.load(open(submission_path + '/info.json'))
 problem_id = submission_info['problemId']
-user = submission_info['user']
+user_id = submission_info['user']
 lang = submission_info['lang']
 problems_path = subprocess.run(
     'problems_path', shell=True, stdout=subprocess.PIPE).stdout.decode("utf8").rstrip('\n')
 
-
 problem_config = json.load(
-    open(problems_path + '/' + problem_id + '/config.json'))
+    open(os.path.join(problems_path, problem_id, 'config.json')))
+
 
 judgetype = problem_config['judgetype']
+
+
+def get_shell_stdout(cmd):
+    return subprocess.run(cmd, shell=True, stdout=subprocess.PIPE).stdout.decode("utf8")
 
 
 def run_shell(cmds):
@@ -41,78 +46,44 @@ def run_shell(cmds):
     return True, ""
 
 
-cell_ids = subprocess.run(
-    'get_sid_by_pid_uid {} {}'.format(problem_id, user), shell=True, stdout=subprocess.PIPE).stdout.decode("utf8").strip()
+def dump_json(obj, obj_path):
+    full_path = os.path.join(base_dir, obj_path)
+    os.makedirs(os.path.dirname(full_path), exist_ok=True)
+    json.dump(obj, open(full_path, "w"))
+    run_shell(["sync_s3 {}".format(obj_path)])
 
-cell_ids = json.loads(cell_ids)
-
-cell_ids.append(submission_id)
-cell_ids = list(set(cell_ids))
-
-subprocess.run(
-    "set_sid_by_pid_uid {} {} '{}'".format(
-        problem_id, user, json.dumps(cell_ids)), shell=True)
-
-
-bestscore = 0.0
-valid = False
-
-for i in cell_ids:
-    try:
-        result = json.load(
-            open(submissions_path + '/' + str(i) + '/result.json'))
-        if result['status'] != 'AC':
-            raise Exception
-        score = float(result['score'])
-        print(str(i), score)
-        if problem_config['objective'] == 'minimize':
-            print("A", bestscore, score)
-            if (not valid) or (bestscore > score):
-                bestscore = score
-            print("B", bestscore, score)
-        elif problem_config['objective'] == 'maximize':
-            if (not valid) or (bestscore < score):
-                bestscore = score
-        valid = True
-    except:
-        print('submission ' + str(i) + ' has invalid result, just ignore')
-
-summary = {'score': '', 'rank': 1000000007, 'user': user}
-
-if valid:
-    summary['score'] = bestscore
-else:
-    exit()
-    summary['score'] = ''
-
-tmp = subprocess.run(
-    'get_scorelist ' + problem_id, shell=True, stdout=subprocess.PIPE).stdout.decode("utf8").strip()
-score_list=[]
 
 try:
-    score_list = json.loads(tmp)
+    result = json.loads(get_shell_stdout(
+        "get_s3_file_cache submissions/{}/result.json".format(submission_id)))
 except:
-    score_list=[]
+    print('submission does not exist')
+    exit()
 
-found = False
-for i in range(len(score_list)):
-    if user == score_list[i]['user']:
-        found = True
-        score_list[i] = summary
-if not found:
-    score_list.append(summary)
+if result['status'] != 'AC':
+    print('submission was invalid, do nothing')
+    exit()
 
-print(score_list)
+pu_result = {}
+pu_result_path = "cache/{}/{}/pu_result.json".format(problem_id, user_id)
+try:
+    pu_result = json.loads(
+        get_shell_stdout("get_s3_file_cache {}".format(pu_result_path)))
+except:
+    print("new submissions by {} for problem {}".format(user_id, problem_id))
 
-score_list = sorted(score_list, key=lambda x: x['score'])
+u_result = {}
+u_result_path = "user/{}/u_result.json".format(user_id)
+try:
+    u_result = json.loads(get_shell_stdout(
+        "get_s3_file_cache {}".format(u_result_path)))
+except:
+    print("new submissions by {}".format(user_id))
 
-print(len(score_list))
-for i in range(len(score_list)):
-    score_list[i]['rank'] = i+1
-    subprocess.run(
-        "set_summary {} {} '{}'".format(problem_id, score_list[i]["user"], json.dumps(score_list[i])), shell=True)
+pu_result[submission_id] = result
+u_result[submission_id] = result
 
-print(score_list)
+dump_json(pu_result, pu_result_path)
+dump_json(u_result, u_result_path)
 
-subprocess.run(
-        "set_scorelist {} '{}'".format(problem_id, json.dumps(score_list)), shell=True)
+run_shell(["update_standings {} {}".format(problem_id, user_id)])

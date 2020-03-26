@@ -4,7 +4,7 @@ set -x
 USER=$1
 PASS=$2
 
-USERPATH=s3://$(get_bucket_name)/user/$USER
+USERPATH="s3://$(get_bucket_name)/user/$USER/password"
 status="0"
 aws s3 ls ${USERPATH} && status="1"
 if [ $status = "1" ]; then
@@ -12,4 +12,4 @@ if [ $status = "1" ]; then
   exit 1
 fi
 
-echo -n "$PASS" | aws s3 cp - ${USERPATH}/password
+echo -n "$PASS" | aws s3 cp - ${USERPATH}

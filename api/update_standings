@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -x
+cd `dirname $0`
+LOCKFILE="./update_standings.lock"
+
+lockfile $LOCKFILE
+trap "rm -f $LOCKFILE" EXIT
+
+python3 update_standings.py $1 $2
+

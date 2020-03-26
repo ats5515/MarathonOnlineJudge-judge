@@ -1,0 +1,23 @@
+#!/bin/bash
+cd `dirname $0`
+
+base_dir=$(basedir)
+
+clear_dir() {
+  files="$base_dir/$1/CACHED"
+  now=$(date +%s)
+  for filepath in $files; do
+	if [ -e $filepath ];  then
+	  cached_time=$(cat $filepath)
+      time_elapsed=$((now - cached_time))
+	  echo $time_elapsed
+	  if [ $((60*60)) -le $time_elapsed ]; then
+		dirname $filepath
+	    rm -rf $(dirname $filepath)
+	  fi
+	fi
+  done
+}
+
+clear_dir "submissions/*"
+clear_dir "cache/*"

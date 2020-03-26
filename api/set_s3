@@ -1,0 +1,10 @@
+#!/bin/bash
+cd `dirname $0`
+
+s3_path="s3://$(get_bucket_name)/$1"
+
+echo "$2" | aws s3 cp - $s3_path
+  
+
+
+

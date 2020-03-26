@@ -9,5 +9,6 @@
 /test
 /www
 /.*
+/deploy.php
 
 !.gitignore

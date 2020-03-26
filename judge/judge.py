@@ -24,7 +24,7 @@ problems_path = subprocess.run(
     'problems_path', shell=True, stdout=subprocess.PIPE).stdout.decode("utf8").rstrip('\n')
 
 problem_config = json.load(
-    open(problems_path + '/' + problem_id + '/config.json'))
+    open(os.path.join(problems_path, problem_id, 'config.json')))
 
 judgetype = problem_config['judgetype']
 
@@ -48,15 +48,9 @@ def run_shell(cmds):
 def run_batch_test(seeds):
     ec2_client = boto3.client('ec2')
 
-    # security group id to be attached to the instance
     secgroup_id = "sg-05f32bfe78686ac8d"
-    # KeyPair name to be used
     keypair_name = "moj_key"
-
     instance_type = 't2.micro'
-
-    # subnet_id = 'subnet-d228e59a'
-
     image_id = 'ami-0af1df87db7b650f4'
 
     resp = ec2_client.run_instances(
@@ -132,7 +126,7 @@ def run_batch_test(seeds):
         run_shell(['mkdir -p ' + submission_path + '/results'])
         for seed in seeds:
             try:
-                subprocess.run(SSH + ' ./run_testcase.sh {} {} {} {}'.format(
+                subprocess.run(SSH + ' ./run_core.sh {} {} {} {}'.format(
                     str(seed["idx"]), str(seed["seed"]),
                     problem_config['timelimit'], problem_config['memorylimit']),
                     shell=True, check=True)

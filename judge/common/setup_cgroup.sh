@@ -1,7 +1,7 @@
 #!/bin/bash
 cd `dirname $0`
 
-set -x
+#set -x
 
 ML=$1
 

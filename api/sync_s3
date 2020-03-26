@@ -1,0 +1,20 @@
+#!/bin/bash
+cd `dirname $0`
+
+#set -x
+
+local_path="$(basedir)/$1"
+local_dir="$(dirname $local_path)"
+s3_path="s3://$(get_bucket_name)/$1"
+if [ -e $local_path ]; then
+  aws s3 cp $local_path $s3_path
+  chmod -R 777 $local_dir 
+  date +%s > $local_dir/CACHED
+  exit 0
+else
+  echo "file not found"
+  exit 1
+fi
+
+
+

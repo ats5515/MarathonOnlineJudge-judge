@@ -1,7 +1,7 @@
 #!/bin/bash
 cd `dirname $0`
 
-set -x
+#set -x
 
 CHROOT_ENV="/home/ec2-user/tmp"
 UPPERDIR="/home/ec2-user/upper"
