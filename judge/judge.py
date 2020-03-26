@@ -45,6 +45,15 @@ def run_shell(cmds):
     return True, ""
 
 
+rm_cmds = []
+rm_cmds.append('rm -f {}'.format(os.path.join(submission_path, 'result.json')))
+rm_cmds.append('rm -f {}'.format(os.path.join(submission_path, 'results.json')))
+rm_cmds.append('rm -f {}'.format(os.path.join(submission_path, 'CE.txt')))
+rm_cmds.append('rm -fr {}'.format(os.path.join(submission_path, 'results/')))
+
+run_shell(rm_cmds)
+
+
 def run_batch_test(seeds):
     ec2_client = boto3.client('ec2')
 
@@ -122,7 +131,7 @@ def run_batch_test(seeds):
 
     if(compile_result):
         # batch test
-        run_shell(["rm {}/CE.txt".format(submission_path)])
+        run_shell(["rm -f {}/CE.txt".format(submission_path)])
         run_shell(['mkdir -p ' + submission_path + '/results'])
         for seed in seeds:
             try:

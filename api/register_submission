@@ -13,9 +13,15 @@ aws s3 ls $S3_PATH >/dev/null 2>&1 || if [ -e $SUB_PATH ]; then :; else exit 1; 
 lockfile $LOCKFILE
 trap "rm -f $LOCKFILE" EXIT
 
-aws s3 cp --recursive $S3_PATH $SUB_PATH
+if [ -e $SUB_PATH ]; then
+  :
+else
+  aws s3 cp --recursive $S3_PATH $SUB_PATH
+fi
 
 python3 register_submission.py $1
+
+aws s3 sync --delete $SUB_PATH $S3_PATH
 
 date +%s > $SUB_PATH/CACHED
 

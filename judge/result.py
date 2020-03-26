@@ -44,6 +44,10 @@ ret = {
     'memory': 0,
     'time': 0,
     'err': '',
+    'user': submission_info['user'],
+	'date': submission_info['date'],
+	'problemId': submission_info['problemId'],
+    'lang': submission_info['lang'],
 }
 if os.path.isfile(submission_path+'/CE.txt'):
     ret['status'] = 'CE'
@@ -80,7 +84,7 @@ else:
     for i in range(nt):
         if results[i]['status'] != 'AC':
             ret['status'] = results[i]['status']
-    
+
     for i in range(nt):
         try:
             results[i]['memory'] = int(results[i]['memory'])
