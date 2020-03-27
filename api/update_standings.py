@@ -120,7 +120,13 @@ else:
     if not found:
         standings.append(best)
 
-standings = sorted(standings, key=lambda x: x['score'])
+if problem_config['objective'] == 'minimize':
+    standings = sorted(standings, key=lambda x: x['score'])
+elif problem_config['objective'] == 'maximize':
+    standings = sorted(standings, key=lambda x: -x['score'])
+else:
+    raise Exception
+
 
 rank = 1
 for value in standings:
