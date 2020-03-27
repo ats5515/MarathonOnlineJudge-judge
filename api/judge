@@ -3,11 +3,14 @@ cd `dirname $0`
 
 set -x
 
+S3_PATH="s3://$(get_bucket_name)/submissions/$1/"
 SUB_PATH=$(submissions_path)/$1
 LOCKFILE="$(submissions_path)/LOCK_JUDGE_$1"
 
 lockfile $LOCKFILE
 trap "rm -f $LOCKFILE" EXIT
+
+aws s3 rm --recursive $S3_PATH 
 
 echo -n "WJ" > ${SUB_PATH}/progress.txt
 timeout 3600 python3 $(basedir)/judge/judge.py $SUB_PATH
