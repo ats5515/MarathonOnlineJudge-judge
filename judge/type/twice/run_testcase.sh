@@ -46,7 +46,7 @@ TIMEOUT=$(($TL+1))
 
 
 #encoder
-SWITCH_CMD=$(./setup_sandbox.sh input1.txt main Main.class)
+SWITCH_CMD=$(./setup_sandbox.sh input1.txt main "*.class")
 
 usleep 100000
 
@@ -68,7 +68,7 @@ echo -n $memory_used > $MEMORY
 ./mediator input1.txt < output1.txt > input2.txt 2>> $ERR|| throw_wrong_answer
 
 #decoder
-SWITCH_CMD=$(./setup_sandbox.sh input2.txt main Main.class)
+SWITCH_CMD=$(./setup_sandbox.sh input2.txt main "*.class")
 
 usleep 100000
 
@@ -85,7 +85,7 @@ time_elapsed=$(($time_elapsed1 + $time_elapsed2))
 memory_used=$(cat '/sys/fs/cgroup/memory/judge/memory.max_usage_in_bytes')
 cat stderr2.txt >> $ERR
 
-$MAXBYTES=1024
+MAXBYTES=1024
 if [ $(wc -c < $ERR) -gt $MAXBYTES ]; then
 	truncate -s $MAXBYTES $ERR
 fi

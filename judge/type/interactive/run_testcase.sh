@@ -41,7 +41,7 @@ throw_wrong_answer () {
 state="AC"
 TIMEOUT=$(($TL+1))
 
-SWITCH_CMD=$(./setup_sandbox.sh Main.class main judge)
+SWITCH_CMD=$(./setup_sandbox.sh "*.class" main judge)
 
 SAND="/home/ec2-user/upper"
 
