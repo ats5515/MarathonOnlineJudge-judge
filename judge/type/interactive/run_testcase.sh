@@ -67,7 +67,7 @@ memory_used=$(cat '/sys/fs/cgroup/memory/judge/memory.max_usage_in_bytes')
 
 cat stderr.txt > $ERR
 
-$MAXBYTES=1024
+MAXBYTES=1024
 if [ $(wc -c < $ERR) -gt $MAXBYTES ]; then
 	truncate -s $MAXBYTES $ERR
 fi
