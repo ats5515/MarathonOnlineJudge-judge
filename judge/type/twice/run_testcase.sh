@@ -46,7 +46,9 @@ TIMEOUT=$(($TL+1))
 
 
 #encoder
-SWITCH_CMD=$(./setup_sandbox.sh input1.txt main)
+SWITCH_CMD=$(./setup_sandbox.sh input1.txt main Main.class)
+
+usleep 100000
 
 start_time1=$(date +%s%N)
 sudo cgexec -g pids,cpuset,memory:judge $SWITCH_CMD sh -c "cd sand; timeout $TIMEOUT $RUN_CMD < input1.txt > output1.txt 2> stderr1.txt " || state="RE"
@@ -66,7 +68,9 @@ echo -n $memory_used > $MEMORY
 ./mediator input1.txt < output1.txt > input2.txt 2>> $ERR|| throw_wrong_answer
 
 #decoder
-SWITCH_CMD=$(./setup_sandbox.sh input2.txt main)
+SWITCH_CMD=$(./setup_sandbox.sh input2.txt main Main.class)
+
+usleep 100000
 
 start_time2=$(date +%s%N)
 sudo cgexec -g pids,cpuset,memory:judge $SWITCH_CMD sh -c "cd sand; timeout $TIMEOUT $RUN_CMD < input2.txt > output2.txt 2> stderr2.txt " || state="RE"

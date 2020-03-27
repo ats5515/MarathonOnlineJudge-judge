@@ -1,4 +1,4 @@
 #!/bin/bash
 
 SUB_PATH=$(submissions_path)/$1
-nohup judge $1 &> ${SUB_PATH}/judgelog.txt & 
+nohup judge $1 &> ${SUB_PATH}/judgelog.txt &

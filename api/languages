@@ -2,4 +2,4 @@
 
 cd `dirname $0`
 cd ../judge/lang
-ls
+ls -l | grep ^d | awk '{print $9}'

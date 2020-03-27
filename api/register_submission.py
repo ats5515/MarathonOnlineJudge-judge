@@ -60,10 +60,6 @@ except:
     print('submission does not exist')
     exit()
 
-if result['status'] != 'AC':
-    print('submission was invalid, do nothing')
-    exit()
-
 pu_result = {}
 pu_result_path = "cache/{}/{}/pu_result.json".format(problem_id, user_id)
 try:

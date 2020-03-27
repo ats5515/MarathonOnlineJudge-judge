@@ -21,7 +21,7 @@ fi
 
 python3 register_submission.py $1
 
-aws s3 sync --delete $SUB_PATH $S3_PATH
+aws s3 sync --delete $SUB_PATH $S3_PATH &> /dev/null
 
 date +%s > $SUB_PATH/CACHED
 

@@ -20,6 +20,7 @@ problems_path = subprocess.run(
 problem_config = json.load(
     open(os.path.join(problems_path, problem_id, 'config.json')))
 
+
 def get_shell_stdout(cmd):
     return subprocess.run(cmd, shell=True, stdout=subprocess.PIPE).stdout.decode("utf8")
 
@@ -75,10 +76,15 @@ for sub_id, res in pu_result.items():
     except:
         print('submission ' + str(sub_id) + ' has invalid result, just ignore')
 
-best = {'score': bestscore, 'rank': 1000000007,
-        'user': user_id, 'bestId': best_id}
 
 best_path = "cache/{}/{}/best.json".format(problem_id, user_id)
+
+best = {}
+if first:
+    print("no valid submission by user {}".format(user_id))
+else:
+    best = {'score': bestscore, 'rank': 1000000007,
+            'user': user_id, 'bestId': best_id}
 
 dump_json(best, best_path)
 
@@ -91,12 +97,28 @@ except:
     print("new submission for problem {}".format(problem_id))
 
 found = False
-for i in range(len(standings)):
-    if standings[i]['user'] == user_id:
-        standings[i] = best
-        found = True
-if not found:
-    standings.append(best)
+if first:
+    idx = -1
+    for i in range(len(standings)):
+        if standings[i]['user'] == user_id:
+            standings[i] = best
+            found = True
+            idx = i
+    if found:
+        standings.pop(idx)
+        run_shell(
+            ["mkdir -p {}".format(os.path.join(base_dir, "user/update")),
+             "touch {}".format(os.path.join(base_dir, "user/update", user_id))])
+    else:
+        print("No change needed for standings.json")
+        exit()
+else:
+    for i in range(len(standings)):
+        if standings[i]['user'] == user_id:
+            standings[i] = best
+            found = True
+    if not found:
+        standings.append(best)
 
 standings = sorted(standings, key=lambda x: x['score'])
 

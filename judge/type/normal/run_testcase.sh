@@ -45,7 +45,9 @@ throw_wrong_answer () {
 state="AC"
 TIMEOUT=$(($TL+1))
 
-SWITCH_CMD=$(./setup_sandbox.sh input.txt main)
+SWITCH_CMD=$(./setup_sandbox.sh Main.class input.txt main)
+
+usleep 100000
 
 start_time=$(date +%s%N)
 sudo cgexec -g pids,cpuset,memory:judge $SWITCH_CMD sh -c "cd sand; timeout $TIMEOUT $RUN_CMD < input.txt > output.txt 2> stderr.txt " || state="RE"

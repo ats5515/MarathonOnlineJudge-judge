@@ -9,7 +9,7 @@ chmod 755 ./*.sh
 sudo useradd judge-user -u 990 -r -s /sbin/nologin -M
 sudo yum install libcgroup libcgroup-tools -y
 sudo service cgconfig start
-
+./setup_cgroup.sh
 ./setup_sandbox.sh
 ./rm_sandbox.sh
 sleep 5

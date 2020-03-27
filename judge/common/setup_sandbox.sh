@@ -40,6 +40,9 @@ done
 mkdir -p ${CHROOT_ENV}/tmp
 sudo chmod -R 777 ${CHROOT_ENV}/tmp
 
+mkdir -p ${CHROOT_ENV}/proc
+sudo mount -t proc none ${CHROOT_ENV}/proc
+
 sudo mount -t overlay overlay -o lowerdir=./lower,upperdir=${UPPERDIR},workdir=${WORKDIR} $SAND
 
 echo -n "sudo chroot --userspec=judge-user:judge-user $CHROOT_ENV"

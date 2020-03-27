@@ -8,7 +8,8 @@
 /data
 /test
 /www
+/deploy
 /.*
 /deploy.php
-
+/judge/run_judge_server.py
 !.gitignore

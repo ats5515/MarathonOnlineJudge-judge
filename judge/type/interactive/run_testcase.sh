@@ -41,9 +41,11 @@ throw_wrong_answer () {
 state="AC"
 TIMEOUT=$(($TL+1))
 
-SWITCH_CMD=$(./setup_sandbox.sh main judge)
+SWITCH_CMD=$(./setup_sandbox.sh Main.class main judge)
 
 SAND="/home/ec2-user/upper"
+
+usleep 100000
 
 start_time=$(date +%s%N)
 sudo cgexec -g pids,cpuset,memory:judge $SWITCH_CMD sh -c "cd sand; mkfifo mj jm; sh -c \"./judge ${SEED} score.txt < mj | cat > jm & \" ; timeout $TIMEOUT sh -c \"$RUN_CMD < jm 2> stderr.txt | cat > mj \" " || state="RE"

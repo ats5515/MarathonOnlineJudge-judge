@@ -24,7 +24,8 @@ problems_path = subprocess.run(
     'problems_path', shell=True, stdout=subprocess.PIPE).stdout.decode("utf8").rstrip('\n')
 
 problem_config = json.load(
-    open(os.path.join(problems_path, problem_id, 'config.json')))
+    open(os.path.join(problems_path, 'problems.json')))
+problem_config = problem_config[problem_id]
 
 judgetype = problem_config['judgetype']
 
@@ -47,7 +48,8 @@ def run_shell(cmds):
 
 rm_cmds = []
 rm_cmds.append('rm -f {}'.format(os.path.join(submission_path, 'result.json')))
-rm_cmds.append('rm -f {}'.format(os.path.join(submission_path, 'results.json')))
+rm_cmds.append(
+    'rm -f {}'.format(os.path.join(submission_path, 'results.json')))
 rm_cmds.append('rm -f {}'.format(os.path.join(submission_path, 'CE.txt')))
 rm_cmds.append('rm -fr {}'.format(os.path.join(submission_path, 'results/')))
 
@@ -128,8 +130,17 @@ def run_batch_test(seeds):
 
     compile_result, err = run_shell([SSH + ' ./compile.sh 2> '
                                      + submission_path + '/CE.txt'])
-
     if(compile_result):
+        # dummy
+        for i in range(5):
+            try:
+                subprocess.run(SSH + ' ./run_core.sh {} {} {} {}'.format(
+                    10000, 1,
+                    problem_config['timelimit'], problem_config['memorylimit']),
+                    shell=True, check=True)
+            except Exception as e:
+                print(e)
+
         # batch test
         run_shell(["rm -f {}/CE.txt".format(submission_path)])
         run_shell(['mkdir -p ' + submission_path + '/results'])
@@ -150,7 +161,7 @@ def run_batch_test(seeds):
 
 seeds = []
 for i in range(problem_config["num_testcases"]):
-    seeds.append({'seed': i, 'idx': i})
+    seeds.append({'seed': i, 'idx': problem_config["seed"][i]})
 
 print("seeds", seeds)
 run_batch_test(seeds=seeds)
