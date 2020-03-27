@@ -2,6 +2,11 @@
 
 SUB_PATH=$(submissions_path)/$1
 
+if [ -e ${SUB_PATH}/result.json ]; then
+  echo -n "done"
+  exit 0
+fi 
+
 status="0"
 aws s3 ls s3://$(get_bucket_name)/submissions/$1/result.json >/dev/null 2>&1 && status="1"
 
