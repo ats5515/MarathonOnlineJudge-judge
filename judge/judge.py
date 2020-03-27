@@ -161,7 +161,7 @@ def run_batch_test(seeds):
 
 seeds = []
 for i in range(problem_config["num_testcases"]):
-    seeds.append({'seed': i, 'idx': problem_config["seed"][i]})
+    seeds.append({'seed': i, 'idx': problem_config["seeds"][i]})
 
 print("seeds", seeds)
 run_batch_test(seeds=seeds)
