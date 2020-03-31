@@ -11,19 +11,12 @@ fi
 
 set -x
 
-file_found="0"
-aws s3 cp $s3_path $local_path > /dev/null && file_found="1" 
-if [ $file_found = "1" ]; then
+aws s3 cp $s3_path $local_path > /dev/null
+if [ -e $local_path ]; then
   date +%s > $local_dir/CACHED
+  cat $local_path
+  exit 0
 else
   echo "file not found" >&2
   exit 1
 fi
-
-if [ -e $local_path ]; then
-  cat $local_path
-  exit 0
-fi
-
-echo "file not found" >&2
-exit 1

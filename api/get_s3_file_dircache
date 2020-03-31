@@ -10,20 +10,16 @@ if [ -e $local_path ]; then
   exit 0
 fi
 
+aws s3 cp --recursive $s3_dir $local_dir > /dev/null
 
-file_found="0"
-aws s3 cp --recursive $s3_dir $local_dir > /dev/null && file_found="1" 
-if [ $file_found = "1" ]; then
+if [ -e $local_path ]; then
   date +%s > $local_dir/CACHED
+  cat $local_path
+  exit 0
 else
+  if [ -z "$(ls $local_dir)" ]; then
+    rm -r $local_dir
+  fi
   echo "file not found" >&2
   exit 1
 fi
-
-if [ -e $local_path ]; then
-  cat $local_path
-  exit 0
-fi
-
-echo "file not found" >&2
-exit 1

@@ -19,7 +19,7 @@ else
   aws s3 cp --recursive $S3_PATH $SUB_PATH
 fi
 
-rm -rf $SUB_PATH/CACHED
+rm -rf ${SUB_PATH}CACHED
 
 aws s3 rm --recursive $S3_PATH
 
