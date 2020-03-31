@@ -21,3 +21,4 @@ clear_dir() {
 
 clear_dir "submissions/*"
 clear_dir "cache/*"
+clear_dir "user/*"
