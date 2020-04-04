@@ -144,11 +144,13 @@ for value in standings:
         dump_json(ranks, ranks_path)
 
         run_shell(
-            ["mkdir -p {}".format(os.path.join(base_dir, "user/update")),
-             "touch {}".format(os.path.join(base_dir, "user/update", value['user']))])
+            ["mkdir -p {}".format(os.path.join(base_dir, "data/update")),
+             "touch {}".format(os.path.join(base_dir, "data/update", value['user']))])
 
     rank = rank + 1
 
 print(standings)
 
 dump_json(standings, standings_path)
+
+run_shell(["user_ranking"])

@@ -1,0 +1,10 @@
+#!/bin/bash
+cd `dirname $0`
+
+path="$(data_path)/last_id.txt"
+last_id=$(cat $path)
+
+for ((i=1; i <= $last_id; i++)); do
+    register_submission $i
+done
+

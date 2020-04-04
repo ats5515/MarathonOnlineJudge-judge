@@ -1,0 +1,5 @@
+#!/bin/bash
+cd `dirname $0`
+
+path="$(data_path)/last_id.txt"
+cat $path

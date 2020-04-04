@@ -1,0 +1,11 @@
+#!/bin/bash
+cd `dirname $0`
+
+set -x
+
+LOCKFILE="./user_ranking.lock"
+lockfile $LOCKFILE
+trap "rm -f $LOCKFILE" EXIT
+
+python3 user_ranking.py
+

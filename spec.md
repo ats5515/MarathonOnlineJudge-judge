@@ -22,7 +22,7 @@ s3://BUCKET/user/USER_ID/u_resultへ追加
 提出がACなら、
 $ update_standings PROBLEM_ID USER_ID
 提出から最も良いものを選びbest.jsonに保存
-standings.json追加変更、ソートしなおし、順位のを変更。
+standings.json追加変更、ソートしなおし、順位を変更。
 s3://BUCKET/user/USER_ID/ranks.jsonの更新
 ファイル　basedir/user/update/USER_ID　を作成
 
