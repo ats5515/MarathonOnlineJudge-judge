@@ -5,4 +5,4 @@ EXTENSION=$(./get_extension.sh)
 
 COMPILE_CMD=$(./compile_cmd.sh main.${EXTENSION} main)
 
-$COMPILE_CMD
+sh -c "$COMPILE_CMD"
